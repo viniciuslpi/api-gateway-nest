@@ -1,7 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { ArrayMinSize, IsArray, IsOptional, IsString } from "class-validator";
+import { IsString, IsOptional, IsArray, ArrayMinSize } from "class-validator";
 
-@Injectable()
 export class AtualizarCategoriaDto {
 
     @IsString()
@@ -11,9 +9,10 @@ export class AtualizarCategoriaDto {
     @IsArray()
     @ArrayMinSize(1)
     eventos: Array<Evento>
+
 }
 
-interface Evento { 
+interface Evento {
     nome: string;
     operacao: string;
     valor: number;
