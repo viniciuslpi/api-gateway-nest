@@ -11,11 +11,11 @@ export class AppController {
 
   constructor() {
     this.clientAdminBackend = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://user:password@ip:port/smartranking'],
-        queue: 'admin-backend'
-      }
+      transport: Transport.TCP,
+      // options: {
+      //   urls: ['amqp://user:password@ip:port/smartranking'],
+      //   queue: 'admin-backend'
+      // }
     })
   }
 
