@@ -32,9 +32,11 @@ export class AwsService {
                         url: `https://smartranking.s3-sa-east-1.amazonaws.com/${urlKey}`
                     }
                 },
-                err => this.logger.error(err)
+                err => {
+                    this.logger.error(err)
+                    return err
+                }
             );
-
         return data;
     }
 }
