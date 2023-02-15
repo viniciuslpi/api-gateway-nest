@@ -71,14 +71,25 @@ export class JogadoresController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadArquivo(@UploadedFile() file, @Param('_id') _id: string) {
 
-    this.logger.log(file);
-
     // verificar se jogador existe
+    const jogador = await this.clientAdminBackend.send('consultar-jogadores', _id);
+    if(!jogador) {
+      throw new BadRequestException(`Jogador nao encontrado`);
+    }
+
     // Enviar o arquivo para o S3 e recuperar a URL de acesso
-    const data = await this.awsService.uploadArquivo(file, _id);
-    return data;
+    const urlFotoJogador = await this.awsService.uploadArquivo(file, _id);
+    
     // Atualizar o atributo URL da entidade jogador
+
+    const atualizarJogadorDto: AtualizarJogadorDto = {}
+    atualizarJogadorDto.urlFotoJogador = urlFotoJogador.url;
+
+    await this.clientAdminBackend.emit('atualizar-jogador', { id: _id, jogador: atualizarJogadorDto });
     // Retornar o jogador atualizado para o cliente
+
+    return this.clientAdminBackend.send('consultar-jogadores', _id);
+
 
   }
 
